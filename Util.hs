@@ -1,6 +1,7 @@
 module Util where
 
 import Control.DeepSeq
+import Data.Functor
 import Text.Printf
 import System.CPUTime
 
@@ -22,15 +23,12 @@ benchmark f x = do
   case res of
     Nothing -> putStrLn "\tFailed to find a solution"
     Just s  -> putStrLn $ "\tSolution: " ++ show s
-  printf "\tTime elapsed: %.03f seconds\n" diff
+  printf "\tTime elapsed: %.06f seconds\n" diff
 
 
 runSolver
   :: (NFData a, NFData b, NFData c, Show b, Show c) => Solver a b c -> IO ()
 runSolver solver = do
-  content <- readFile $ inputFile solver
-  let input = force $ parseInput solver content
-  putStrLn "PART 1"
-  benchmark (part1 solver) input
-  putStrLn "PART 2"
-  benchmark (part2 solver) input
+  input <- force . parseInput solver <$> readFile (inputFile solver)
+  putStrLn "PART 1" >> benchmark (part1 solver) input
+  putStrLn "PART 2" >> benchmark (part2 solver) input
