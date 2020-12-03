@@ -3,8 +3,10 @@ module Day02
   )
 where
 
+import Control.Applicative
 import Control.DeepSeq (NFData(..))
 import Data.Char
+import Data.Function
 import Text.ParserCombinators.ReadP
 
 import Util (Solver(..), runSolver)
@@ -17,7 +19,7 @@ instance NFData Policy where
 
 
 parseLine :: String -> (Policy, String)
-parseLine s = head $ readP_to_S parser s
+parseLine = head . readP_to_S parser
  where
   parser = do
     minC <- read <$> munch1 isDigit
@@ -30,13 +32,13 @@ parseLine s = head $ readP_to_S parser s
 
 
 part1Valid :: (Policy, String) -> Bool
-part1Valid (Policy minC maxC pChr, str) = c >= minC && c <= maxC
-  where c = length $ filter (== pChr) str
+part1Valid (Policy minC maxC pChr, str) = liftA2 (&&) (>= minC) (<= maxC) cnt
+  where cnt = length $ filter (== pChr) str
 
 
 part2Valid :: (Policy, String) -> Bool
-part2Valid (Policy pos1 pos2 pChr, str) =
-  (str !! (pos1 - 1) == pChr) /= (str !! (pos2 - 1) == pChr)
+part2Valid (Policy pos1 pos2 pChr, str) = on (/=) pChrAt pos1 pos2
+  where pChrAt = (== pChr) . (str !!) . subtract 1
 
 
 solveDay02 :: IO ()
