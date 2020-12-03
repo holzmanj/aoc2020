@@ -26,9 +26,8 @@ benchmark f x = do
   printf "\tTime elapsed: %.06f seconds\n" diff
 
 
-runSolver
-  :: (NFData a, NFData b, NFData c, Show b, Show c) => Solver a b c -> IO ()
+runSolver :: (NFData b, NFData c, Show b, Show c) => Solver a b c -> IO ()
 runSolver solver = do
-  input <- force . parseInput solver <$> readFile (inputFile solver)
+  input <- parseInput solver <$> readFile (inputFile solver)
   putStrLn "PART 1" >> benchmark (part1 solver) input
   putStrLn "PART 2" >> benchmark (part2 solver) input
