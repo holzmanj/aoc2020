@@ -1,7 +1,6 @@
 module Util where
 
 import Control.DeepSeq
-import Data.Functor
 import Text.Printf
 import System.CPUTime
 

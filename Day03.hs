@@ -4,8 +4,6 @@ module Day03
 where
 
 import Control.Applicative
-import Data.Functor
-import Text.Printf
 
 import Util
 
