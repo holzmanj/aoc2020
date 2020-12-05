@@ -1,8 +1,6 @@
 module Util where
 
-import Control.DeepSeq
-import Text.Printf
-import System.CPUTime
+import Criterion.Main
 
 
 data Solver a b c = Solver
@@ -13,20 +11,15 @@ data Solver a b c = Solver
     }
 
 
-benchmark :: (Show b, NFData b) => (a -> Maybe b) -> a -> IO ()
-benchmark f x = do
-  t0 <- getCPUTime
-  let res = f x
-  t1 <- res `deepseq` getCPUTime
-  let diff = fromIntegral (t1 - t0) / (10 ^ 12) :: Float
-  case res of
-    Nothing -> putStrLn "\tFailed to find a solution"
-    Just s  -> putStrLn $ "\tSolution: " ++ show s
-  printf "\tTime elapsed: %.06f seconds\n" diff
-
-
-runSolver :: (NFData b, NFData c, Show b, Show c) => Solver a b c -> IO ()
+runSolver :: (Show b, Show c) => Solver a b c -> IO ()
 runSolver solver = do
   input <- parseInput solver <$> readFile (inputFile solver)
-  putStrLn "PART 1" >> benchmark (part1 solver) input
-  putStrLn "PART 2" >> benchmark (part2 solver) input
+  putStrLn "-- SOLUTIONS --"
+  putStrLn $ "Part 1 (silver):  " ++ maybeShow (part1 solver input)
+  putStrLn $ "Part 2 (gold):    " ++ maybeShow (part2 solver input)
+  putStrLn "\n\n-- PERFORMANCE --"
+  defaultMain
+    [ bench "part 1 (silver)" $ whnf (part1 solver) input
+    , bench "part 2 (gold)" $ whnf (part2 solver) input
+    ]
+  where maybeShow x = maybe "Faild to find a solution" show x
