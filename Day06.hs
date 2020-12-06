@@ -1,3 +1,7 @@
+module Day06
+  ( solveDay06
+  )
+where
 
 import Data.List
 import Data.List.Split
