@@ -9,11 +9,15 @@ import Data.List.Split
 import Util
 
 
+solve :: (String -> String -> String) -> [[String]] -> Int
+solve f = length . concatMap (foldr1 f)
+
+
 solveDay06 :: IO ()
 solveDay06 = runSolver Solver
   { inputFile  = "inputs/06.txt"
-  , parseInput = splitOn "\n\n"
-  , part1      = Just . sum . map (length . nub . filter (/= '\n'))
-  , part2      = Just . sum . map (length . foldr1 intersect . lines)
+  , parseInput = map lines . splitOn "\n\n"
+  , part1      = Just . solve union
+  , part2      = Just . solve intersect
   }
 
