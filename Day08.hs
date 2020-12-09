@@ -1,4 +1,7 @@
-module Day08 where
+module Day08
+  ( day08Solver
+  )
+where
 
 import Data.Set (Set, delete, empty, insert, member)
 import Data.Vector (Vector, (!), (//), fromList)
@@ -79,12 +82,13 @@ initState :: [Inst] -> State
 initState p = State { pc = 0, acc = 0, prog = fromList p, seen = empty }
 
 
-solveDay08 :: IO ()
-solveDay08 = runSolver Solver
+day08Solver = Solver
   { inputFile  = "inputs/08.txt"
   , parseInput = initState . map parseInst . lines
-  , part1      = Just . acc . runUntilLoop
-  , part2      = Just . acc . fixBadOp
+  , part1      = acc . runUntilLoop
+  , part2      = acc . fixBadOp
   }
 
 
+main :: IO ()
+main = runSolver day08Solver

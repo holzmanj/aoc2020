@@ -1,3 +1,7 @@
+module Day07
+  ( day07Solver
+  )
+where
 
 import Data.Char
 import Data.List hiding (transpose)
@@ -45,10 +49,13 @@ countNested g = subtract 1 . count
   count' (_, vtx, wgt) = wgt * count vtx
 
 
-solveDay07 :: IO ()
-solveDay07 = runSolver Solver
+day07Solver = Solver
   { inputFile  = "inputs/07.txt"
   , parseInput = concatMap readBag . lines
-  , part1      = Just . length . flip reachable "shiny gold" . transpose
-  , part2      = Just . flip countNested "shiny gold"
+  , part1      = length . flip reachable "shiny gold" . transpose
+  , part2      = flip countNested "shiny gold"
   }
+
+
+main :: IO ()
+main = runSolver day07Solver

@@ -6,17 +6,16 @@ import Criterion.Main
 data Solver a b c = Solver
     { inputFile :: String
     , parseInput :: String -> a
-    , part1 :: a -> Maybe b
-    , part2 :: a -> Maybe c
+    , part1 :: a -> b
+    , part2 :: a -> c
     }
 
 
 runSolver :: (Show b, Show c) => Solver a b c -> IO ()
 runSolver solver = do
   input <- parseInput solver <$> readFile (inputFile solver)
-  putStrLn $ "Part 1 (silver):  " ++ maybeShow (part1 solver input)
-  putStrLn $ "Part 2 (gold):    " ++ maybeShow (part2 solver input)
-  where maybeShow x = maybe "Faild to find a solution" show x
+  putStrLn $ "Part 1 (silver):  " ++ show (part1 solver input)
+  putStrLn $ "Part 2 (gold):    " ++ show (part2 solver input)
 
 
 benchmark :: Solver a b c -> IO ()

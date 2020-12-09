@@ -1,5 +1,5 @@
 module Day03
-  ( solveDay03
+  ( day03Solver
   )
 where
 
@@ -22,10 +22,13 @@ slopes :: [(Int, Int)]
 slopes = [(3, 1), (1, 1), (5, 1), (7, 1), (1, 2)]
 
 
-solveDay03 :: IO ()
-solveDay03 = runSolver Solver
+day03Solver = Solver
   { inputFile  = "inputs/03.txt"
   , parseInput = map parseLine . lines
-  , part1      = Just . trees (head slopes)
-  , part2      = Just . product . ((<$> slopes) . flip trees)
+  , part1      = trees (head slopes)
+  , part2      = product . ((<$> slopes) . flip trees)
   }
+
+
+main :: IO ()
+main = runSolver day03Solver

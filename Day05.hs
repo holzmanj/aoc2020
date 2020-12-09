@@ -1,5 +1,5 @@
 module Day05
-  ( solveDay05
+  ( day05Solver
   )
 where
 
@@ -17,10 +17,13 @@ findSeat :: [Int] -> Int
 findSeat = head . liftA2 (\\) (\l -> [minimum l .. maximum l]) id
 
 
-solveDay05 :: IO ()
-solveDay05 = runSolver Solver
+day05Solver = Solver
   { inputFile  = "inputs/05.txt"
   , parseInput = map seatID . lines
-  , part1      = Just . maximum
-  , part2      = Just . findSeat
+  , part1      = maximum
+  , part2      = findSeat
   }
+
+
+main :: IO ()
+main = runSolver day05Solver

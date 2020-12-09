@@ -1,5 +1,5 @@
 module Day02
-  ( solveDay02
+  ( day02Solver
   )
 where
 
@@ -9,7 +9,7 @@ import Data.Char
 import Data.Function
 import Text.ParserCombinators.ReadP
 
-import Util (Solver(..), runSolver)
+import Util
 
 
 data Policy = Policy Int Int Char
@@ -41,11 +41,13 @@ part2Valid (Policy pos1 pos2 pChr, str) = on (/=) pChrAt pos1 pos2
   where pChrAt = (== pChr) . (str !!) . subtract 1
 
 
-solveDay02 :: IO ()
-solveDay02 = runSolver Solver
+day02Solver = Solver
   { inputFile  = "inputs/02.txt"
   , parseInput = map parseLine . lines
-  , part1      = Just . length . filter part1Valid
-  , part2      = Just . length . filter part2Valid
+  , part1      = length . filter part1Valid
+  , part2      = length . filter part2Valid
   }
 
+
+main :: IO ()
+main = runSolver day02Solver

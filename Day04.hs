@@ -1,5 +1,5 @@
 module Day04
-  ( solveDay04
+  ( day04Solver
   )
 where
 
@@ -41,11 +41,12 @@ validFields = flip all fieldPatterns . validField
     let val = lookup fld pass in maybe False (=~ pat) val
 
 
-solveDay04 :: IO ()
-solveDay04 = runSolver Solver
+day04Solver = Solver
   { inputFile  = "inputs/04.txt"
   , parseInput = parse
-  , part1      = Just . length . filter hasFields
-  , part2      = Just . length . filter validFields
+  , part1      = length . filter hasFields
+  , part2      = length . filter validFields
   }
 
+main :: IO ()
+main = runSolver day04Solver
