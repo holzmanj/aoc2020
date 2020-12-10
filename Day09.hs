@@ -1,4 +1,7 @@
-module Day09 where
+module Day09
+  ( day09Solver
+  )
+where
 
 import Control.Applicative
 import Data.Vector (Vector, (!), fromList, modify, slice)
